@@ -42,6 +42,7 @@ namespace Datos
 
 
 
+
         public static Tarjeta BuscarPorId(int sId)
         {
             using (pav2Entities db = new pav2Entities())
