@@ -1,0 +1,191 @@
+
+<h3>{{Titulo}} <small>{{TituloAccionABMC[AccionABMC]}}</small></h3>
+
+
+<!-- Formulario Filtro de busqueda, se ve cuando la accion es Listado(busqueda/listado)-->
+<form name="FormFiltro" class="bg-light" novalidate>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-1">
+            Nombre:
+        </label>
+        <div class="col-sm-3">
+            <input type="text" name="Nombre"
+                   class="form-control"
+                   ng-model="DtoFiltro.Nombre" />
+        </div>
+        <label class="col-form-label col-sm-2  text-left">
+            Activo:
+        </label>
+        <div class="col-sm-3">
+            <select class="form-control"
+                    ng-model="DtoFiltro.Activo">
+                <option value=''></option>
+                <option value=true>SI</option>
+                <option value=false>NO</option>
+            </select>
+        </div>
+    </div>
+    <!-- Botones -->
+    <div class="row justify-content-center">
+        <button class="btn btn-primary" ng-click="Buscar();">
+            <span class="fa fa-search"> </span> Consultar
+        </button>
+        <button class="btn btn-primary" ng-click="Agregar()">
+            <span class="fa fa-plus"> </span> Agregar
+        </button>
+    </div>
+</form>
+
+<!-- Tabla de resutados de busqueda y Paginador-->
+<div>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Precio</th>
+            <th class="text-center">Stock</th>
+            <th class="text-center">Fecha de Alta</th>
+            <th class="text-center">Activo</th>
+            <th class="text-center text-nowrap">Acciones</th>
+        </tr>
+        <tr ng-repeat="dto in Lista">
+            <td>{{dto.Nombre | uppercase}}</td>
+            <td class="text-right">{{dto.Precio}}</td>
+            <td class="text-right">{{dto.Stock}}</td>
+            <td>{{dto.FechaAlta| date:'dd/MM/yyyy'}}</td>
+            <td>{{dto.Activo ? 'SI' : 'NO'}}</td>
+            <td class="text-center text-nowrap">
+                <button class="btn btn-primary btn-sm" title="Ver"
+                        ng-click="Consultar(dto)">
+                    <span class="fa fa-search"></span>
+                </button>
+                <button class="btn btn-primary btn-sm" title="Modificar"
+                        ng-click="Modificar(dto)">
+                    <span class="fa fa-pencil"></span>
+                </button>
+                <button class="btn  btn-sm btn-{{ dto.Activo ? 'danger':'success'}}" title="{{dto.Activo ? 'Desactivar':'Activar'}}"
+                        ng-click="ActivarDesactivar(dto)">
+                    <span class="fa fa-{{dto.Activo ? 'remove':'check'}}"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+    <!-- Paginador-->
+    <div class="col-sm-12">
+        <div class="row bg-light">
+            <div class="col-sm-3">
+                <span class="label label-default font-weight-bold">Registros: {{RegistrosTotal}}</span>
+            </div>
+            <div class="col-sm-6 text-center">
+				aqui componennte paginador
+            </div>
+            <div class="col-sm-3 text-right">
+                <button class="btn btn-primary" ng-click="ImprimirListado()"><span class="fa fa-print"></span> Imprimir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--No se encontraron registros-->
+<div class="alert alert-info" ng-show="AccionABMC == 'L' && Lista && Lista.length== 0">
+    <span class="fa fa-exclamation-sign"></span>{{Mensajes['SD']}}<!-- texto: No se encontraron registros -->
+</div>
+
+<!-- Registro en Alta,Modificacion y Consulta -->
+<form name="FormReg" novalidate>
+
+    <!--campo nombre-->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-2" for="Nombre">Nombre <span class="text-danger">*</span></label>
+        <div class="col-sm-6">
+            <input type="text" name="Nombre"
+                   class="form-control"
+                   ng-model="DtoSel.Nombre"/>
+        </div>
+    </div>
+
+    <!--campo precio-->
+    <div class="row form-group">
+        <label class="col-form-label col-sm-2 col-sm-offset-2" for="Precio">Precio <span class="text-danger">*</span></label>
+        <div class="col-sm-6">
+            <input type="text" name="Precio"
+                   class="form-control"
+                   ng-model="DtoSel.Precio"/>
+        </div>
+    </div>
+
+
+    <!--campo stock-->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-2" for="Stock">
+            Stock <span class="text-danger">*</span>
+        </label>
+        <div class="col-sm-6">
+            <input type="text" name="Stock"
+                   class="form-control"
+                   ng-model="DtoSel.Stock"/>
+        </div>
+    </div>
+
+    <!--campo codigodebarra-->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-2" for="Stock">
+            Codigo De Barra <span class="text-danger">*</span>
+        </label>
+        <div class="col-sm-6">
+            <input type="text" name="CodigoDeBarra"
+                   class="form-control"
+                   ng-model="DtoSel.CodigoDeBarra"/>
+        </div>
+    </div>
+
+    <!--campo idarticulofamilia-->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-2" for="IdArticuloFamilia">
+            Familia <span class="text-danger">*</span>
+        </label>
+        <div class="col-sm-6">
+            <select name="IdArticuloFamilia"
+                    class="form-control"
+                    ng-model="DtoSel.IdArticuloFamilia"
+                    ng-options="obj.IdArticuloFamilia as obj.Nombre for obj in Familias">
+			</select>
+        </div>
+    </div>
+
+    <!--campo fechaalta-->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-2">Fecha de alta <span class="text-danger">*</span></label>
+        <div class="col-sm-6">
+            <input type="text" name="FechaAlta"
+                   class="form-control"
+                   ng-model="DtoSel.FechaAlta"/>
+        </div>
+    </div>
+
+    <!--campo activo-->
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2 col-sm-offset-2" for="Activo">Activo</label>
+        <div class="col-sm-6">
+            <select name="Activo"
+                    class="form-control"
+                    ng-model="DtoSel.Activo"
+                    ng-options="obj.Id as obj.Nombre for obj in OpcionesSiNo">
+			</select>
+        </div>
+    </div>
+
+    <!-- Botones y alerta 'revisar datos' -->
+    <div class="row justify-content-center">
+        <button class="btn btn-primary" ng-click="Grabar()">
+            <span class="fa fa-check"></span> Grabar
+        </button>
+        &nbsp;
+        <button class="btn btn-warning" ng-click="Volver()">
+            <span class="fa fa-remove"></span>  Volver / Cancelar
+        </button>
+    </div>
+    <div class="row alert alert-danger" ng-show="FormReg.$submitted && FormReg.$invalid">
+        <span class="fa fa-exclamation-sign"></span>{{Mensajes['RD']}}<!--texto: Revisar los datos ingresados...-->
+    </div>
+
+</form>

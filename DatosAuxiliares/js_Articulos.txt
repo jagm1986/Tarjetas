@@ -1,0 +1,90 @@
+myApp.controller('ArticulosCtrl',
+  function ($scope, $http) {
+
+      $scope.Titulo = 'Gestionar Articulos';  // inicia mostrando el Listado
+      // articulo cargado inicialmente, como demo para probar la interface visual (luego comentar esta linea)
+      $scope.Lista = [{ IdArticulo: 1, Nombre: 'Articulo Demo', Precio: 110.25, Stock: 357, FechaAlta: '2017-10-03T03:00:00', Activo: true, CodigoDeBarra:'1234567890123', IdArticuloFamilia:1 }];
+
+      $scope.TituloAccionABMC = { A: '(Agregar)', B: '(Eliminar)', M: '(Modificar)', C: '(Consultar)', L: null };
+      $scope.AccionABMC = 'L';   // inicialmente inicia el el listado (buscar con parametros)
+      $scope.Mensajes = { SD: ' No se encontraron registros...', RD: ' Revisar los datos ingresados...' };
+
+
+      $scope.DtoFiltro = {};    // dto con las opciones para buscar en grilla
+      $scope.DtoFiltro.Activo = null;
+      $scope.PaginaActual = 1;  // inicia pagina 1
+
+      // opciones del filtro activo
+      $scope.OpcionesSiNo = [{ Id: null, Nombre: '' }, { Id: true, Nombre: 'SI' }, { Id: false, Nombre: 'NO' }];
+
+      // invoca metodo WebApi para cargar una lista de datos (familias de articulos) que se usa en un combo
+      $http.get('/api/ArticulosFamilias').then(function (response) {
+          $scope.Familias = response.data;
+      });
+
+      ///**FUNCIONES**///
+      $scope.Agregar = function () {
+          $scope.AccionABMC = 'A';
+          $scope.DtoSel = {};
+          $scope.DtoSel.Activo = true;
+      };
+
+      //Buscar segun los filtros, establecidos en DtoFiltro
+      $scope.Buscar = function () {
+          alert('Buscando datos...');
+      };
+
+
+      $scope.Consultar = function (Dto) {
+          $scope.BuscarPorId(Dto,'C');
+      };
+
+      //comienza la modificacion, luego la confirma con el metodo Grabar
+      $scope.Modificar = function (Dto) {
+          if (!Dto.Activo) {
+              alert("No puede modificarse un registro Inactivo.");
+              return;
+          }
+          $scope.BuscarPorId(Dto,'M');
+      };
+
+      //Obtengo datos del servidor de un registros, metodo usado en el consultar y modificar
+      $scope.BuscarPorId = function (Dto, accionABM) {
+          $scope.DtoSel = Dto;
+		  $scope.AccionABMC = accionABM
+      };
+
+
+      //grabar tanto altas como modificaciones
+      $scope.Grabar = function () {
+          if ($scope.DtoSel.IdArticulo == undefined)  // agregar
+          {
+              // agregar post
+              $scope.Volver()
+              alert('Articulo Agregado!');
+          }
+          else {
+              // modificar put
+              $scope.Volver()
+              alert('Articulo Modificado!');
+          }
+      };
+
+      $scope.ActivarDesactivar = function (Dto) {
+          var resp = confirm("Esta seguro de " + (Dto.Activo ? "desactivar" : "activar") + " este registro?");
+          if (resp)
+              alert('Articulo ' + (Dto.Activo ? "desactivado" : "activado"));
+      };
+
+      // Volver Agregar/Modificar
+      $scope.Volver = function () {
+          $scope.DtoSel = null;
+          $scope.AccionABMC = 'L';
+      };
+
+      $scope.ImprimirListado = function () {
+          alert("Sin desarrollar...")
+      };
+
+  }
+);

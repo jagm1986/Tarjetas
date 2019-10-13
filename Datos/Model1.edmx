@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="pav2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tarjetas">
+          <Key>
+            <PropertyRef Name="IdTarjeta" />
+          </Key>
+          <Property Name="IdTarjeta" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Numero" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Limite" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="IdTipoTarjeta" Type="int" Nullable="false" />
+          <Property Name="FechaAlta" Type="date" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tipo_Tarjeta">
+          <Key>
+            <PropertyRef Name="IdTipoTarjeta" />
+          </Key>
+          <Property Name="IdTipoTarjeta" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar(max)" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_Tarjetas_Tipo_Tarjeta">
+          <End Role="Tipo_Tarjeta" Type="Self.Tipo_Tarjeta" Multiplicity="1" />
+          <End Role="Tarjetas" Type="Self.Tarjetas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Tarjeta">
+              <PropertyRef Name="IdTipoTarjeta" />
+            </Principal>
+            <Dependent Role="Tarjetas">
+              <PropertyRef Name="IdTipoTarjeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="pav2ModelStoreContainer">
+          <EntitySet Name="Tarjetas" EntityType="Self.Tarjetas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Tarjeta" EntityType="Self.Tipo_Tarjeta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tarjetas_Tipo_Tarjeta" Association="Self.FK_Tarjetas_Tipo_Tarjeta">
+            <End Role="Tipo_Tarjeta" EntitySet="Tipo_Tarjeta" />
+            <End Role="Tarjetas" EntitySet="Tarjetas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="pav2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tarjeta">
+          <Key>
+            <PropertyRef Name="IdTarjeta" />
+          </Key>
+          <Property Name="IdTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Numero" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Limite" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="IdTipoTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="FechaAlta" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Tipo_Tarjeta" Relationship="Self.FK_Tarjetas_Tipo_Tarjeta" FromRole="Tarjetas" ToRole="Tipo_Tarjeta" />
+        </EntityType>
+        <EntityType Name="Tipo_Tarjeta">
+          <Key>
+            <PropertyRef Name="IdTipoTarjeta" />
+          </Key>
+          <Property Name="IdTipoTarjeta" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tarjetas" Relationship="Self.FK_Tarjetas_Tipo_Tarjeta" FromRole="Tipo_Tarjeta" ToRole="Tarjetas" />
+        </EntityType>
+        <Association Name="FK_Tarjetas_Tipo_Tarjeta">
+          <End Role="Tipo_Tarjeta" Type="Self.Tipo_Tarjeta" Multiplicity="1" />
+          <End Role="Tarjetas" Type="Self.Tarjeta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Tarjeta">
+              <PropertyRef Name="IdTipoTarjeta" />
+            </Principal>
+            <Dependent Role="Tarjetas">
+              <PropertyRef Name="IdTipoTarjeta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="pav2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tarjetas" EntityType="Self.Tarjeta" />
+          <EntitySet Name="Tipo_Tarjeta" EntityType="Self.Tipo_Tarjeta" />
+          <AssociationSet Name="FK_Tarjetas_Tipo_Tarjeta" Association="Self.FK_Tarjetas_Tipo_Tarjeta">
+            <End Role="Tipo_Tarjeta" EntitySet="Tipo_Tarjeta" />
+            <End Role="Tarjetas" EntitySet="Tarjetas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="pav2ModelStoreContainer" CdmEntityContainer="pav2Entities">
+          <EntitySetMapping Name="Tarjetas">
+            <EntityTypeMapping TypeName="pav2Model.Tarjeta">
+              <MappingFragment StoreEntitySet="Tarjetas">
+                <ScalarProperty Name="IdTarjeta" ColumnName="IdTarjeta" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Limite" ColumnName="Limite" />
+                <ScalarProperty Name="IdTipoTarjeta" ColumnName="IdTipoTarjeta" />
+                <ScalarProperty Name="FechaAlta" ColumnName="FechaAlta" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Tarjeta">
+            <EntityTypeMapping TypeName="pav2Model.Tipo_Tarjeta">
+              <MappingFragment StoreEntitySet="Tipo_Tarjeta">
+                <ScalarProperty Name="IdTipoTarjeta" ColumnName="IdTipoTarjeta" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,14 @@
+<h3>{{Titulo}}</h3>
+<div>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th class="text-center">IdArticuloFamilia</th>
+            <th class="text-center">Nombre</th>
+        </tr>
+        <tr ng-repeat="dto in Lista">
+            <td>{{dto.IdArticuloFamilia}}</td>
+            <td>{{dto.Nombre | uppercase}}</td>
+        </tr>
+    </table>
+</div>
+

@@ -1,0 +1,5 @@
+// aqui va el codigo de nuestra aplicacion
+myApp = angular.module('myApp',[]);
+myApp.controller('InicioCtrl', function ($scope) {
+    $scope.Titulo ='Pymes Demo - 2019';
+});

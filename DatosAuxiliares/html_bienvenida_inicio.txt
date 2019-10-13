@@ -1,0 +1,7 @@
+		<div class="jumbotron">
+            <h1>Pymes Demo - 2019</h1>
+            <p>Este ejemplo esta desarrollado con las siguientes tecnologias: </p>
+            <p>BackEnd: VisualStudio 2017, Aplicacion Web con WebApi2, EntityFramework 6, multiples capas en C#.
+            <p>FrontEnd: Single Page Aplication, HTML, CSS, Bootstrap, Jquery y Angularjs.</p>
+            <a class="btn btn-lg btn-primary" href="/articulos.html" role="button">Ver ABMC Articulos &raquo;</a>
+        </div>
